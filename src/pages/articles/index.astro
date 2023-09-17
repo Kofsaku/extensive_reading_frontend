@@ -4,10 +4,13 @@ import { fetchAllArticles } from '../../api/fetchAllArticles';
 const articles = await fetchAllArticles();
 ---
 
-<ul>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
   {articles.map(article => (
-    <li>
-      <a href={`/articles/${article.id}`}>{article.title}</a>
-    </li>
+    <div class="bg-white p-5 shadow-md rounded-lg transition-transform transform hover:scale-105">
+      <h3 class="text-lg font-semibold mb-4">
+        <a href={`/articles/${article.id}`} class="text-blue-600 hover:underline">{article.title}</a>
+      </h3>
+      <p>{article.description}</p> {/* 仮定: 記事にdescriptionが存在する場合 */}
+    </div>
   ))}
-</ul>
+</div>

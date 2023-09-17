@@ -1,21 +1,27 @@
 ---
 import { fetchArticleById } from '../../api/fetchArticleById';
+import { nl2br } from '../../../utils/textUtils.js';
 
 export async function getStaticPaths() {
-  const articles = await fetch(`http://172.24.0.3:3000/articles`).then(res => res.json());
-  const paths = articles.map(article => ({ params: { id: article.id.toString() } }));
-  return paths;  // 直接配列を返します
+    const articles = await fetch(`http://172.24.0.3:3000/articles`).then(res => res.json());
+    const paths = articles.map(article => ({ params: { id: article.id.toString() } }));
+    return paths;  // 直接配列を返します
 }
 
-
-
-// Astro.params から id を取得し、数値に変換します。
 const id = Number(Astro.params.id);
 const article = await fetchArticleById(id);
+const paragraphs = nl2br(article.content);
+
 ---
 
-<article>
-  <h2>{article.title}</h2>
-  <p>{article.content}</p>
-  <a href={`/articles/`}>Back to Articles</a>
+<article class="p-6 bg-white shadow-lg rounded-xl max-w-xl mx-auto">
+    <h2 class="text-2xl font-bold mb-4">{article.title}</h2>
+    <div class="text-gray-700 leading-relaxed mb-6">
+        {paragraphs.map(paragraph => (
+            <p>
+                {paragraph.join('<br>')}
+            </p>
+        ))}
+    </div>
+    <a href={`/articles/`} class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Back to Articles</a>
 </article>
