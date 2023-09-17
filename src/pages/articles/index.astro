@@ -1,0 +1,13 @@
+---
+import { fetchAllArticles } from '../../api/fetchAllArticles';
+
+const articles = await fetchAllArticles();
+---
+
+<ul>
+  {articles.map(article => (
+    <li>
+      <a href={`/articles/${article.id}`}>{article.title}</a>
+    </li>
+  ))}
+</ul>

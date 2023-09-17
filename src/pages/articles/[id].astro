@@ -1,0 +1,21 @@
+---
+import { fetchArticleById } from '../../api/fetchArticleById';
+
+export async function getStaticPaths() {
+  const articles = await fetch(`http://172.24.0.3:3000/articles`).then(res => res.json());
+  const paths = articles.map(article => ({ params: { id: article.id.toString() } }));
+  return paths;  // 直接配列を返します
+}
+
+
+
+// Astro.params から id を取得し、数値に変換します。
+const id = Number(Astro.params.id);
+const article = await fetchArticleById(id);
+---
+
+<article>
+  <h2>{article.title}</h2>
+  <p>{article.content}</p>
+  <a href={`/articles/`}>Back to Articles</a>
+</article>
